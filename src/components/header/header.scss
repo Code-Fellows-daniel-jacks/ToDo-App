@@ -1,0 +1,17 @@
+header {
+  display: flex;
+  justify-content: space-between;
+  div{
+    height: 1.5rem;
+    font-size: 1.1em;
+  }
+  .bp3-button-group {
+    display: flex;
+    margin-top: 1.5rem;
+    margin-right: 1.5rem;
+    button {
+      margin-right: 1rem;
+      margin-left: 1rem;
+    }
+  }
+}
