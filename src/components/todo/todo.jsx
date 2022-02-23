@@ -1,21 +1,21 @@
 import React, { useContext, useEffect, useState } from 'react';
 
-import { todoContext } from '../../context/context.js';
-import useForm from '../../hooks/form.js';
-
+import { useGlobState } from '../../context/context.js';
 import Header from '../header/Header.jsx';
+import useForm from '../../hooks/form.js';
 import ToDoList from '../todoList/ToDoList.jsx';
 
 import { v4 as uuid } from 'uuid';
 
 const ToDo = () => {
-  let context = useContext(todoContext);
+  let { numberOfItems, page, showCompleted, difficulty } = useGlobState();
+  console.log(numberOfItems, page, showCompleted, difficulty);
   const [list, setList] = useState([]);
+  const [listToDisplay, setListToDisplay] = useState([]);
   const [incomplete, setIncomplete] = useState([]);
   const { handleChange, handleSubmit } = useForm(addItem);
 
   function addItem(item) {
-    console.log(item);
     item.id = uuid();
     item.complete = false;
     setList([...list, item]);
@@ -27,7 +27,6 @@ const ToDo = () => {
   }
 
   function toggleComplete(id) {
-
     const items = list.map(item => {
       if (item.id == id) {
         item.complete = !item.complete;
@@ -36,13 +35,23 @@ const ToDo = () => {
     });
 
     setList(items);
-
   }
 
   useEffect(() => {
     let incompleteCount = list.filter(item => !item.complete).length;
     setIncomplete(incompleteCount);
     document.title = `To Do List: ${incomplete}`;
+  }, [list]);
+
+  useEffect(() => {
+    let tempArr = [];
+    let index = (page * numberOfItems) - numberOfItems;
+    console.log(index);
+    let counter = numberOfItems < list.length ? numberOfItems : list.length;
+    for (index; index < counter; index += 1) {
+      tempArr[index] = list[index];
+    }
+    setListToDisplay(tempArr);
   }, [list]);
 
   return (
@@ -71,7 +80,7 @@ const ToDo = () => {
           <button type="submit">Add Item</button>
         </label>
       </form>
-      <ToDoList list={list} />
+      <ToDoList list={listToDisplay} />
     </>
   );
 };

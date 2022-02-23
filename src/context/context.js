@@ -1,19 +1,23 @@
-import React from 'react';
+import React, { useContext, useState } from 'react';
 
-export const todoContext = React.createContext();
+let todoContext = React.createContext();
 
-function todoProvider(props) {
+export function useGlobState() {
+  return useContext(todoContext);
+}
+
+export default function todoProvider({ children }) {
   const state = {
-    nubmerOFItems: 0,
+    numberOfItems: 4,
+    page: 3,
     showCompleted: true,
+    sortBy: '',
     difficulty: 0,
   }
 
   return (
     <todoContext.Provider value={state}>
-      {props.children}
+      {children}
     </todoContext.Provider>
   )
 }
-
-export default todoProvider;

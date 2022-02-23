@@ -1,3 +1,5 @@
+import { useGlobState } from "../../context/context"
+
 export default function ToDoList({ list }) {
   return (
     list.map((item, idx) => (

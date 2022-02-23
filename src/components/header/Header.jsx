@@ -13,9 +13,13 @@ export default function Header({ incomplete }) {
         <Button text='DarkMode' />
         <Button text='Edit' />
         <Divider />
-        <Button text='+' />
-        <div>Results Shown</div>
-        <Button text='-' />
+        <Slider
+          min={0}
+          max={10}
+          stepSize={2}
+          labelStepSize={2}
+          showTrackFill={true}
+        />
       </ButtonGroup>
     </header>
   )
