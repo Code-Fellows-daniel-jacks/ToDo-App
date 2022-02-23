@@ -4,12 +4,13 @@ import { useGlobState } from '../../context/context.js';
 import Header from '../header/Header.jsx';
 import useForm from '../../hooks/form.js';
 import ToDoList from '../todoList/ToDoList.jsx';
+import Pagination from '../pagination/pagination.jsx';
 
 import { v4 as uuid } from 'uuid';
 
 const ToDo = () => {
   let { numberOfItems, page, showCompleted, difficulty } = useGlobState();
-  console.log(numberOfItems, page, showCompleted, difficulty);
+  // console.log(numberOfItems, page, showCompleted, difficulty);
   const [list, setList] = useState([]);
   const [listToDisplay, setListToDisplay] = useState([]);
   const [incomplete, setIncomplete] = useState([]);
@@ -46,10 +47,11 @@ const ToDo = () => {
   useEffect(() => {
     let tempArr = [];
     let index = (page * numberOfItems) - numberOfItems;
-    console.log(index);
-    let counter = numberOfItems < list.length ? numberOfItems : list.length;
+    let counter = (numberOfItems < list.length) ? (numberOfItems * page) : (list.length * page);
     for (index; index < counter; index += 1) {
-      tempArr[index] = list[index];
+      if (list[index]) {
+        tempArr[index] = list[index];
+      }
     }
     setListToDisplay(tempArr);
   }, [list]);
@@ -81,6 +83,7 @@ const ToDo = () => {
         </label>
       </form>
       <ToDoList list={listToDisplay} />
+      <Pagination list={list} />
     </>
   );
 };

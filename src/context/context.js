@@ -8,7 +8,7 @@ export function useGlobState() {
 
 export default function todoProvider({ children }) {
   const state = {
-    numberOfItems: 4,
+    numberOfItems: 2,
     page: 3,
     showCompleted: true,
     sortBy: '',
