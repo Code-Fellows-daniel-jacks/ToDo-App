@@ -9,7 +9,6 @@ export function useGlobState() {
 export default function todoProvider({ children }) {
   const state = {
     numberOfItems: 2,
-    page: 3,
     showCompleted: true,
     sortBy: '',
     difficulty: 0,

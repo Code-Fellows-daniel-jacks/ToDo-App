@@ -9,9 +9,10 @@ import Pagination from '../pagination/pagination.jsx';
 import { v4 as uuid } from 'uuid';
 
 const ToDo = () => {
-  let { numberOfItems, page, showCompleted, difficulty } = useGlobState();
+  let { numberOfItems, showCompleted, difficulty } = useGlobState();
   // console.log(numberOfItems, page, showCompleted, difficulty);
   const [list, setList] = useState([]);
+  const [page, setPage] = useState(1);
   const [listToDisplay, setListToDisplay] = useState([]);
   const [incomplete, setIncomplete] = useState([]);
   const { handleChange, handleSubmit } = useForm(addItem);
@@ -45,16 +46,13 @@ const ToDo = () => {
   }, [list]);
 
   useEffect(() => {
-    let tempArr = [];
+    console.log(page);
     let index = (page * numberOfItems) - numberOfItems;
     let counter = (numberOfItems < list.length) ? (numberOfItems * page) : (list.length * page);
-    for (index; index < counter; index += 1) {
-      if (list[index]) {
-        tempArr[index] = list[index];
-      }
-    }
+    let tempArr = list.slice(index, counter);
+
     setListToDisplay(tempArr);
-  }, [list]);
+  }, [list, page]);
 
   return (
     <>
@@ -83,7 +81,7 @@ const ToDo = () => {
         </label>
       </form>
       <ToDoList list={listToDisplay} />
-      <Pagination list={list} />
+      <Pagination list={list} setPage={setPage} />
     </>
   );
 };
