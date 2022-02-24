@@ -1,5 +1,6 @@
 import { Button, ButtonGroup } from '@mui/material';
 import { useGlobState } from "../../context/context";
+import './pagination.scss';
 
 export default function Pagination({ list, setPage }) {
   let { numberOfItems } = useGlobState();

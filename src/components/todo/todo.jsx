@@ -1,4 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
+import { Card } from '@mui/material';
+import './todo.scss';
 
 import { useGlobState } from '../../context/context.js';
 import Header from '../header/Header.jsx';
@@ -6,11 +8,9 @@ import useForm from '../../hooks/form.js';
 import ToDoList from '../todoList/ToDoList.jsx';
 import Pagination from '../pagination/pagination.jsx';
 
-import { v4 as uuid } from 'uuid';
-
 const ToDo = () => {
   let { numberOfItems, showCompleted, difficulty } = useGlobState();
-  console.log(numberOfItems, showCompleted, difficulty);
+  // console.log(numberOfItems, showCompleted, difficulty);
   const [list, setList] = useState([]);
   const [page, setPage] = useState(1);
   const [listToDisplay, setListToDisplay] = useState([]);
@@ -18,9 +18,7 @@ const ToDo = () => {
   const { handleChange, handleSubmit } = useForm(addItem);
 
   function addItem(item) {
-    item.id = uuid();
-    item.complete = false;
-    setList([...list, item]);
+    setList(prevList => [...prevList, item]);
   }
 
   function deleteItem(id) {
@@ -35,7 +33,6 @@ const ToDo = () => {
       }
       return item;
     });
-
     setList(items);
   }
 
@@ -48,16 +45,16 @@ const ToDo = () => {
   useEffect(() => {
     let index = (page * numberOfItems) - numberOfItems; // starting index for subList, in order to render different items for different pages
     let counter = (numberOfItems < list.length) ? (numberOfItems * page) : (list.length * page); // ending index, same as line above
-    let booleanList = list.filter(item => item.complete === showCompleted);
+    let booleanList = list.filter(item => item.complete === showCompleted || item.complete === false);
     let reducedList = booleanList.slice(index, counter);
     let processedList = reducedList.filter(item => item != null);
-
     setListToDisplay(processedList);
-  }, [list, page, numberOfItems]);
+  }, [list, page, numberOfItems, showCompleted]);
 
   return (
     <>
       <Header incomplete={incomplete} />
+      <Card className='form-card'>
       <form onSubmit={handleSubmit}>
 
         <h2>Add To Do Item</h2>
@@ -81,6 +78,7 @@ const ToDo = () => {
           <button type="submit">Add Item</button>
         </label>
       </form>
+      </Card>
       <ToDoList list={listToDisplay} toggleComplete={toggleComplete} />
       <Pagination list={list} setPage={setPage} />
     </>

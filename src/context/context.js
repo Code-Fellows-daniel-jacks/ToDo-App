@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 
 let todoContext = React.createContext();
 
@@ -11,8 +11,9 @@ export default function todoProvider({ children }) {
   let [showCompleted, toggleShowCompleted] = useState(false);
   let [sortBy, setSortBy] = useState('');
   let [difficulty, setDifficulty] = useState(3);
+  let [state, setState] = useState();
 
-  const state = {
+  let startingState = {
     numberOfItems,
     setNumberOfItems,
     showCompleted,
@@ -23,8 +24,24 @@ export default function todoProvider({ children }) {
     setDifficulty,
   }
 
+  useEffect(() => {
+    async function gettingState() {
+      console.log('in there');
+      let JSONstate = localStorage.getItem('state');
+      if (JSONstate) setState(JSON.parse(JSONstate));
+      else setState(startingState);
+      console.log('get', localStorage);
+    }
+    gettingState();
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem('state', JSON.stringify(state));
+    console.log('set', localStorage);
+  }, [state]);
+
   return (
-    <todoContext.Provider value={state}>
+    <todoContext.Provider value={startingState}>
       {children}
     </todoContext.Provider>
   )
