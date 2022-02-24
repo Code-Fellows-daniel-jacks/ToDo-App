@@ -10,7 +10,7 @@ import { v4 as uuid } from 'uuid';
 
 const ToDo = () => {
   let { numberOfItems, showCompleted, difficulty } = useGlobState();
-  // console.log(numberOfItems, page, showCompleted, difficulty);
+  console.log(numberOfItems, showCompleted, difficulty);
   const [list, setList] = useState([]);
   const [page, setPage] = useState(1);
   const [listToDisplay, setListToDisplay] = useState([]);
@@ -43,16 +43,17 @@ const ToDo = () => {
     let incompleteCount = list.filter(item => !item.complete).length;
     setIncomplete(incompleteCount);
     document.title = `To Do List: ${incomplete}`;
-  }, [list]);
+  }, [list, numberOfItems]);
 
   useEffect(() => {
-    console.log(page);
-    let index = (page * numberOfItems) - numberOfItems;
-    let counter = (numberOfItems < list.length) ? (numberOfItems * page) : (list.length * page);
-    let tempArr = list.slice(index, counter);
+    let index = (page * numberOfItems) - numberOfItems; // starting index for subList, in order to render different items for different pages
+    let counter = (numberOfItems < list.length) ? (numberOfItems * page) : (list.length * page); // ending index, same as line above
+    let booleanList = list.filter(item => item.complete === showCompleted);
+    let reducedList = booleanList.slice(index, counter);
+    let processedList = reducedList.filter(item => item != null);
 
-    setListToDisplay(tempArr);
-  }, [list, page]);
+    setListToDisplay(processedList);
+  }, [list, page, numberOfItems]);
 
   return (
     <>
@@ -80,7 +81,7 @@ const ToDo = () => {
           <button type="submit">Add Item</button>
         </label>
       </form>
-      <ToDoList list={listToDisplay} />
+      <ToDoList list={listToDisplay} toggleComplete={toggleComplete} />
       <Pagination list={list} setPage={setPage} />
     </>
   );

@@ -7,11 +7,20 @@ export function useGlobState() {
 }
 
 export default function todoProvider({ children }) {
+  let [numberOfItems, setNumberOfItems] = useState(2);
+  let [showCompleted, toggleShowCompleted] = useState(false);
+  let [sortBy, setSortBy] = useState('');
+  let [difficulty, setDifficulty] = useState(3);
+
   const state = {
-    numberOfItems: 2,
-    showCompleted: true,
-    sortBy: '',
-    difficulty: 0,
+    numberOfItems,
+    setNumberOfItems,
+    showCompleted,
+    toggleShowCompleted,
+    sortBy,
+    setSortBy,
+    difficulty,
+    setDifficulty,
   }
 
   return (
