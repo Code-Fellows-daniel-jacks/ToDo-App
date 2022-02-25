@@ -11,9 +11,7 @@ export default function todoProvider({ children }) {
   let [showCompleted, toggleShowCompleted] = useState(false);
   let [sortBy, setSortBy] = useState('');
   let [difficulty, setDifficulty] = useState(3);
-  let [state, setState] = useState();
-
-  let startingState = {
+  let state = {
     numberOfItems,
     setNumberOfItems,
     showCompleted,
@@ -22,26 +20,30 @@ export default function todoProvider({ children }) {
     setSortBy,
     difficulty,
     setDifficulty,
-  }
+  };
 
   useEffect(() => {
-    async function gettingState() {
-      console.log('in there');
-      let JSONstate = localStorage.getItem('state');
-      if (JSONstate) setState(JSON.parse(JSONstate));
-      else setState(startingState);
-      console.log('get', localStorage);
+    let JSONstate = localStorage.getItem('state');
+    let { numberOfItems, showCompleted, sortBy, difficulty } = JSON.parse(JSONstate);
+    if (JSONstate) {
+      setNumberOfItems(numberOfItems);
+      toggleShowCompleted(showCompleted);
+      setSortBy(sortBy);
+      setDifficulty(difficulty);
     }
-    gettingState();
+  //   // if (JSONstate) setState(prevState => {
+  //   //   let { numberOfItems, showCompleted, sortBy, difficulty } = JSON.parse(JSONstate);
+  //   //   return { ...prevState, numberOfItems, showCompleted, sortBy, difficulty }
+  //   // });
+  //   // else setState(startingState);
   }, []);
 
   useEffect(() => {
     localStorage.setItem('state', JSON.stringify(state));
-    console.log('set', localStorage);
+    // console.log('setting', localStorage);
   }, [state]);
-
   return (
-    <todoContext.Provider value={startingState}>
+    <todoContext.Provider value={state}>
       {children}
     </todoContext.Provider>
   )

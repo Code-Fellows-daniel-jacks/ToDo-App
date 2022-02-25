@@ -7,16 +7,12 @@ const useForm = (callback) => {
 
   const handleSubmit = (event) => {
     if (event) event.preventDefault();
-
-    values.id = uuid();
-    values.complete = false;
-
-    callback(values);
+    let decoupledValue = JSON.parse(JSON.stringify(values));
+    callback(decoupledValue); // courtesy of Kellen, this removes the reference to the previous object and creates a new one to update state with.
   };
 
   const handleChange = (event) => {
     event.persist();
-
     setValues(values => ({ ...values, [event.target.name]: event.target.value }));
   };
 

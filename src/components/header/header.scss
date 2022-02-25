@@ -1,6 +1,7 @@
 header {
   display: flex;
-  justify-content: space-between;
+  grid: 1fr 1fr 1fr;
+  grid-gap: 1rem;
   margin-top: 2rem;
   margin-right: 15%;
   margin-left: 15%;
@@ -9,6 +10,11 @@ header {
     font-size: 1.1em;
     grid-column: 2/3;
     grid-row: 2;
+  }
+  .login-card {
+    height: 6.6rem;
+    display: grid;
+    grid: 1fr 1fr 1fr / auto;
   }
   .contextController-card {
     display: grid;

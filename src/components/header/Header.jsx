@@ -1,3 +1,4 @@
+import Login from '../auth/login.js';
 import { useGlobState } from '../../context/context.js';
 
 import { Slider, Button, Card, ButtonGroup, Switch } from '@mui/material';
@@ -19,6 +20,8 @@ export default function Header({ incomplete }) {
 
   return (
     <header>
+      <Login />
+
       <Card className='h1-card'>
         <h1>To Do List: {incomplete} items pending</h1>
       </Card>

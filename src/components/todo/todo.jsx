@@ -1,5 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Card } from '@mui/material';
+
+import { v4 as uuid } from 'uuid';
+
 import './todo.scss';
 
 import { useGlobState } from '../../context/context.js';
@@ -18,7 +21,11 @@ const ToDo = () => {
   const { handleChange, handleSubmit } = useForm(addItem);
 
   function addItem(item) {
-    setList(prevList => [...prevList, item]);
+
+    item.id = uuid();
+    item.complete = false;
+    setList([...list, item]);
+
   }
 
   function deleteItem(id) {
