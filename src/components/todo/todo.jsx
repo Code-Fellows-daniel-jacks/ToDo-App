@@ -1,23 +1,20 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Card } from '@mui/material';
 import { When } from 'react-if';
-
 import { v4 as uuid } from 'uuid';
 
-import './todo.scss';
-
-import { useGlobState } from '../../context/context.js';
+import { useGlobState } from '../context/context.js';
 import { LoginContext } from '../auth/authContext.js';
-import Auth from '../auth/auth.js';
 import Header from '../header/Header.jsx';
 import useForm from '../../hooks/form.js';
 import ToDoList from '../todoList/ToDoList.jsx';
 import Pagination from '../pagination/pagination.jsx';
 
+import './todo.scss';
+
 const ToDo = () => {
   let { numberOfItems, showCompleted, difficulty } = useGlobState();
   let authContext = useContext(LoginContext);
-  // console.log(numberOfItems, showCompleted, difficulty);
   const [list, setList] = useState([]);
   const [page, setPage] = useState(1);
   const [listToDisplay, setListToDisplay] = useState([]);

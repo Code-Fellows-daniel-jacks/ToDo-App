@@ -1,5 +1,7 @@
 import { Button, ButtonGroup } from '@mui/material';
-import { useGlobState } from "../../context/context";
+
+import { useGlobState } from "../context/context.js";
+
 import './pagination.scss';
 
 export default function Pagination({ list, setPage }) {

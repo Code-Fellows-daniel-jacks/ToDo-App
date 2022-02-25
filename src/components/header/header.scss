@@ -17,27 +17,51 @@ header {
   }
   .contextController-card {
     display: grid;
-    width: 40%;
+    width: 42%;
     height: 6.6rem;
     grid: 2.2rem 2.2rem 2.2rem/ 1fr 1fr 1fr 1fr;
     h3 {
-      grid-column: 1/4;
+      grid-column: 1/3;
       text-align: center;
       align-self: center;
     }
+    .login-button {
+      grid-row: 1;
+      grid-column: 4;
+    } 
     button {
       width: 5rem;
     }
-    .css-iajp3t-MuiButtonGroup-root{
-      width: 10rem;
+    .switch{
+      height: 2.2;
+      margin-left: 0px;
+      margin-right: 0px;
       align-self: center;
-      grid-column: 2/3;
+      grid-column: 1/3;
       grid-row: 2;
+      h4 {
+        width: 100%;
+        margin: 1rem;
+        align-self: center;
+      }
     }
-    .css-187mznn-MuiSlider-root {
-      align-self: center;
-      grid-column: 2/3;
+    .slider {
+      height: 2.2rem;
+      display: flex;
+      grid-column: 1/3;
       grid-row: 3;
+      h4 {
+        width: 150%;
+        margin: 1rem;
+        align-self: center;
+      }
     }
   }
+}
+
+.popup {
+  width: 30rem;
+  margin-right: auto;
+  margin-left: auto;
+  margin-top: 10rem;
 }

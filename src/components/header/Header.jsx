@@ -1,10 +1,11 @@
+import { useContext, useState } from 'react';
+import { Slider, Button, Card, ButtonGroup, Switch, Modal } from '@mui/material';
+
 import Login from '../auth/login.js';
-import { useGlobState } from '../../context/context.js';
+import { useGlobState } from '../context/context.js';
 import { LoginContext } from '../auth/authContext.js';
 
-import { Slider, Button, Card, ButtonGroup, Switch, Modal } from '@mui/material';
 import './header.scss';
-import { useContext, useState } from 'react';
 
 export default function Header({ incomplete }) {
   let { setNumberOfItems, toggleShowCompleted, showCompleted } = useGlobState();
@@ -34,12 +35,15 @@ export default function Header({ incomplete }) {
       </Card>
       <Card className='contextController-card'>
         <h3>Context Controller</h3>
-          <ButtonGroup>
-            <Switch onChange={handleToggle} color='secondary' />
-        </ButtonGroup>
-          <Button>Hello</Button>
-          <Button onClick={toggleClose}>{authContext.loggedIn ? 'Logout' : 'Login'}</Button>
-        <Slider aria-label="Temperature" onChange={handleChange} valueLabelDisplay='auto' defaultValue={2} step={2} marks min={2} max={10} />
+          <ButtonGroup className='switch'>
+            <h4>Show Completed</h4>
+            <Switch onChange={handleToggle} defaultChecked={true} color='info' />
+          </ButtonGroup>
+          <Button className='login-button' onClick={toggleClose}>{authContext.loggedIn ? 'Logout' : 'Login'}</Button>
+          <div className='slider'>
+            <h4>Items Per Page</h4>
+            <Slider aria-label="Temperature" onChange={handleChange} valueLabelDisplay='auto' defaultValue={2} step={2} marks min={2} max={10} />
+          </div>
       </Card>
     </header>
       <Modal
@@ -47,6 +51,7 @@ export default function Header({ incomplete }) {
         onClose={toggleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
+        className="popup"
       >
         <Card>
           <Login toggleClose={toggleClose} />

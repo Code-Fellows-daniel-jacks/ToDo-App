@@ -1,9 +1,8 @@
+import { Card } from '@mui/material';
+
 import Auth from '../auth/auth.js';
 
-import { Card } from '@mui/material';
-import { useGlobState } from "../../context/context"
 import './ToDoList.scss';
-
 
 export default function ToDoList({ list, toggleComplete, deleteItem }) {
   return (

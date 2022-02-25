@@ -2,7 +2,6 @@ import React from 'react';
 import { When } from 'react-if';
 import { Button, Card } from '@mui/material';
 
-
 import { LoginContext } from './authContext.js';
 
 class Login extends React.Component {

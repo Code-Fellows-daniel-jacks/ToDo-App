@@ -8,7 +8,7 @@ export function useGlobState() {
 
 export default function todoProvider({ children }) {
   let [numberOfItems, setNumberOfItems] = useState(2);
-  let [showCompleted, toggleShowCompleted] = useState(false);
+  let [showCompleted, toggleShowCompleted] = useState(true);
   let [sortBy, setSortBy] = useState('');
   let [difficulty, setDifficulty] = useState(3);
   let state = {
@@ -31,11 +31,11 @@ export default function todoProvider({ children }) {
       setSortBy(sortBy);
       setDifficulty(difficulty);
     }
-  //   // if (JSONstate) setState(prevState => {
-  //   //   let { numberOfItems, showCompleted, sortBy, difficulty } = JSON.parse(JSONstate);
-  //   //   return { ...prevState, numberOfItems, showCompleted, sortBy, difficulty }
-  //   // });
-  //   // else setState(startingState);
+    //   // if (JSONstate) setState(prevState => {
+    //   //   let { numberOfItems, showCompleted, sortBy, difficulty } = JSON.parse(JSONstate);
+    //   //   return { ...prevState, numberOfItems, showCompleted, sortBy, difficulty }
+    //   // });
+    //   // else setState(startingState);
   }, []);
 
   useEffect(() => {
