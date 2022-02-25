@@ -1,9 +1,9 @@
 import React from 'react';
 import { When } from 'react-if';
 
-import { LoginContext } from './context.js';
+import { LoginContext } from './authContext.js';
 
-class Login extends React.Component {
+class Auth extends React.Component {
 
   static contextType = LoginContext;
 
@@ -20,4 +20,4 @@ class Login extends React.Component {
   }
 }
 
-export default Login;
+export default Auth;
