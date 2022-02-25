@@ -1,11 +1,14 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Card } from '@mui/material';
+import { When } from 'react-if';
 
 import { v4 as uuid } from 'uuid';
 
 import './todo.scss';
 
 import { useGlobState } from '../../context/context.js';
+import { LoginContext } from '../auth/authContext.js';
+import Auth from '../auth/auth.js';
 import Header from '../header/Header.jsx';
 import useForm from '../../hooks/form.js';
 import ToDoList from '../todoList/ToDoList.jsx';
@@ -13,6 +16,7 @@ import Pagination from '../pagination/pagination.jsx';
 
 const ToDo = () => {
   let { numberOfItems, showCompleted, difficulty } = useGlobState();
+  let authContext = useContext(LoginContext);
   // console.log(numberOfItems, showCompleted, difficulty);
   const [list, setList] = useState([]);
   const [page, setPage] = useState(1);
@@ -62,31 +66,36 @@ const ToDo = () => {
     <>
       <Header incomplete={incomplete} />
       <Card className='form-card'>
-      <form onSubmit={handleSubmit}>
+        <When condition={authContext.loggedIn}>
+          <form onSubmit={handleSubmit}>
 
-        <h2>Add To Do Item</h2>
+            <h2>Add To Do Item</h2>
 
-        <label>
-          <span>To Do Item</span>
-          <input onChange={handleChange} name="text" type="text" placeholder="Item Details" />
-        </label>
+            <label>
+              <span>To Do Item</span>
+              <input onChange={handleChange} name="text" type="text" placeholder="Item Details" />
+            </label>
 
-        <label>
-          <span>Assigned To</span>
-          <input onChange={handleChange} name="assignee" type="text" placeholder="Assignee Name" />
-        </label>
+            <label>
+              <span>Assigned To</span>
+              <input onChange={handleChange} name="assignee" type="text" placeholder="Assignee Name" />
+            </label>
 
-        <label>
-          <span>Difficulty</span>
-          <input onChange={handleChange} defaultValue={3} type="range" min={1} max={5} name="difficulty" />
-        </label>
+            <label>
+              <span>Difficulty</span>
+              <input onChange={handleChange} defaultValue={3} type="range" min={1} max={5} name="difficulty" />
+            </label>
 
-        <label>
-          <button type="submit">Add Item</button>
-        </label>
-      </form>
+            <label>
+              <button type="submit">Add Item</button>
+            </label>
+          </form>
+        </When>
+        <When condition={!authContext.loggedIn}>
+          <h2>Please login in order to interact with list</h2>
+        </When>
       </Card>
-      <ToDoList list={listToDisplay} toggleComplete={toggleComplete} />
+      <ToDoList list={listToDisplay} toggleComplete={toggleComplete} deleteItem={deleteItem} />
       <Pagination list={list} setPage={setPage} />
     </>
   );

@@ -5,7 +5,7 @@ import './app.scss';
 
 import Auth from './components/auth/auth.js';
 import Login from './components/auth/login.js';
-import LoginContext from './components/auth/context.js';
+import LoginContext from './components/auth/authContext.js';
 import Context from './context/context.js';
 import ToDo from './components/todo/todo.jsx';
 

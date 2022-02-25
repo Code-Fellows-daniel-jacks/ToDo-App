@@ -2,9 +2,9 @@ import React from 'react';
 import jwt from 'jsonwebtoken';
 
 const testUsers = {
-  admin: { password: 'password', name: 'Administrator', role: 'admin', capabilities: ['create', 'read', 'update', 'delete'] },
-  editor: { password: 'password', name: 'Editor', role: 'editor', capabilities: ['read', 'update'] },
-  writer: { password: 'password', name: 'Writer', role: 'writer', capabilities: ['create'] },
+  admin: { password: 'password', name: 'Administrator', role: 'admin', capabilities: ['read', 'create', 'update', 'delete'] },
+  editor: { password: 'password', name: 'Editor', role: 'editor', capabilities: ['read', 'create', 'update'] },
+  writer: { password: 'password', name: 'Writer', role: 'writer', capabilities: ['read', 'create'] },
 };
 
 export const LoginContext = React.createContext();
