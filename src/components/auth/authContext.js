@@ -39,6 +39,7 @@ class LoginProvider extends React.Component {
     })
       .then(results => results.json())
       .then(data => {
+        console.log(data);
         if (data.user) {
           this.setLoginState(true, data.user.token, data.user);
         }
