@@ -1,4 +1,6 @@
 import Auth from '../components/auth/auth.js';
+import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 import { render, screen, fireEvent } from '@testing-library/react';
 
 const fakeResponse = rest.post('http://localhost:3001/signin', (req, res, ctx) => {
@@ -22,13 +24,11 @@ afterAll(() => server.close());
 describe('Tests Auth component handles conditional rendering', () => {
   it('Will only show what the user is authorized to see', () => {
 
-
     render(
       <Auth capability="read">
         <div>words</div>
       </Auth>
     );
-
 
   })
 })
