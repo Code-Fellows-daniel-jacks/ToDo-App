@@ -1,11 +1,11 @@
 import React from 'react';
 import jwt from 'jsonwebtoken';
 
-const testUsers = {
-  admin: { password: 'password', name: 'Administrator', role: 'admin', capabilities: ['read', 'create', 'update', 'delete'] },
-  editor: { password: 'password', name: 'Editor', role: 'editor', capabilities: ['read', 'create', 'update'] },
-  writer: { password: 'password', name: 'Writer', role: 'writer', capabilities: ['read', 'create'] },
-};
+// const testUsers = {
+//   admin: { password: 'password', name: 'Administrator', role: 'admin', capabilities: ['read', 'create', 'update', 'delete'] },
+//   editor: { password: 'password', name: 'Editor', role: 'editor', capabilities: ['read', 'create', 'update'] },
+//   writer: { password: 'password', name: 'Writer', role: 'writer', capabilities: ['read', 'create'] },
+// };
 
 export const LoginContext = React.createContext();
 
@@ -19,7 +19,9 @@ class LoginProvider extends React.Component {
       signup: this.signup,
       login: this.login,
       logout: this.logout,
+      token: this.token,
       user: { capabilities: [] },
+      list: [],
     };
   }
 
@@ -37,10 +39,7 @@ class LoginProvider extends React.Component {
     })
       .then(results => results.json())
       .then(data => {
-        console.log(data)
         if (data.user) {
-          console.log('in there');
-          console.log(data.user);
           this.setLoginState(true, data.user.token, data.user);
         }
       })
@@ -63,7 +62,6 @@ class LoginProvider extends React.Component {
     })
       .then(results => results.json())
       .then(data => {
-        console.log(data)
         if (data.user) {
           console.log('in there');
           console.log(data.user);
@@ -78,32 +76,9 @@ class LoginProvider extends React.Component {
     this.setLoginState(false, null, {});
   };
 
-  validateToken = token => {
-    try {
-      let user = jwt.verify(token, process.env.REACT_APP_SECRET);
-      this.setLoginState(true, token, user);
-    }
-    catch (e) {
-      this.setLoginState(false, null, {});
-      console.log('Token Validation Error', e);
-    }
-
-  };
-
   setLoginState = (loggedIn, token, user) => {
     this.setState({ token, loggedIn, user });
   };
-
-  componentDidMount() {
-    fetch('http://localhost:3001/todo', {
-      method: 'GET',
-    })
-      .then(results => results.json())
-      .then(data => console.log('Did it', data))
-      .catch(reject => {
-        console.log('Did not do it', reject);
-      })
-  }
 
   render() {
     return (
