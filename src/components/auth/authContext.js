@@ -16,6 +16,7 @@ class LoginProvider extends React.Component {
     this.state = {
       loggedIn: false,
       can: this.can,
+      signup: this.signup,
       login: this.login,
       logout: this.logout,
       user: { capabilities: [] },
@@ -27,11 +28,50 @@ class LoginProvider extends React.Component {
   }
 
   login = (username, password) => {
-    if (testUsers[username]) {
-      // Create a "good" token, like you'd get from a server
-      const token = jwt.sign(testUsers[username], process.env.REACT_APP_SECRET);
-      this.validateToken(token);
+    fetch('http://localhost:3001/signin', {
+      method: 'POST',
+      headers: {
+        'Authorization': 'Basic ' + btoa(`${username}:${password}`),
+        'Content-Type': 'application/json',
+      },
+    })
+      .then(results => results.json())
+      .then(data => {
+        console.log(data)
+        if (data.user) {
+          console.log('in there');
+          console.log(data.user);
+          this.setLoginState(true, data.user.token, data.user);
+        }
+      })
+      .catch(err => console.log(err));
+  }
+
+  signup = (username, password, role) => {
+    let requestObj = {
+      username: username,
+      password: password,
+      role: role || 'user',
     }
+    console.log(JSON.stringify(requestObj));
+    fetch('http://localhost:3001/signup', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(requestObj),
+    })
+      .then(results => results.json())
+      .then(data => {
+        console.log(data)
+        if (data.user) {
+          console.log('in there');
+          console.log(data.user);
+          this.setLoginState(true, data.user.token, data.user);
+        }
+      })
+      .catch(err => console.log(err));
+
   }
 
   logout = () => {
@@ -53,6 +93,17 @@ class LoginProvider extends React.Component {
   setLoginState = (loggedIn, token, user) => {
     this.setState({ token, loggedIn, user });
   };
+
+  componentDidMount() {
+    fetch('http://localhost:3001/todo', {
+      method: 'GET',
+    })
+      .then(results => results.json())
+      .then(data => console.log('Did it', data))
+      .catch(reject => {
+        console.log('Did not do it', reject);
+      })
+  }
 
   render() {
     return (
