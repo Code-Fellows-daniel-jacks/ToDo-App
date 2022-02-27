@@ -9,7 +9,7 @@ export default function ToDoList({ list, toggleComplete, deleteItem }) {
     <Auth capability='read'>
       <div className='list-grid'>
       {list.map((item, idx) => (
-        <Card key={item.id + idx}>
+        <Card key={item.trackId + idx}>
         <p>{item.text}</p>
         <p><small>Assigned to: {item.assignee}</small></p>
         <p><small>Difficulty: {item.difficulty}</small></p>

@@ -16,13 +16,11 @@ class Signup extends React.Component {
   }
 
   handleChange = e => {
-    console.log(e.target.name);
     this.setState({ [e.target.name]: e.target.value })
   }
 
   handleSubmit = e => {
     e.preventDefault();
-    console.log(this.state);
     this.context.signup(this.state.username, this.state.password, this.state.role);
   }
 

@@ -13,7 +13,7 @@ const useForm = (callback) => {
 
     values.trackId = uuid();
     values.complete = false;
-    console.log({ ...values });
+    values.difficulty = values.difficulty ?? 3;
 
     fetch(`http://localhost:3001/api/v2/todo`, {
       method: 'POST',

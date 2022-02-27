@@ -44,7 +44,7 @@ export default function todoProvider({ children }) {
           setList(data);
         })
         .catch(reject => {
-          console.log('Did not do it', reject);
+          console.log('Err', reject);
         })
     }
   }, [numberOfItems, showCompleted, sortBy, difficulty, authContext]);

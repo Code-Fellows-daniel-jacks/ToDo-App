@@ -15,7 +15,6 @@ import './todo.scss';
 const ToDo = () => {
   let { numberOfItems, showCompleted, list, setList } = useGlobState();
   let authContext = useContext(LoginContext);
-  console.log(authContext);
   const [page, setPage] = useState(1);
   const [listToDisplay, setListToDisplay] = useState([]);
   const [incomplete, setIncomplete] = useState([]);
@@ -43,7 +42,6 @@ const ToDo = () => {
   function toggleComplete(id) {
     const itemToChange = list.find(item => item.id === id);
     const updatedBool = itemToChange.complete ? false : true;
-    console.log('ITEM TO CHANGE HERE', itemToChange)
     fetch(`http://localhost:3001/api/v2/todo/${id}`, {
       method: 'PUT',
       headers: {
@@ -86,10 +84,8 @@ const ToDo = () => {
       <Header incomplete={incomplete} />
       <Card className='form-card'>
         <When condition={authContext.loggedIn}>
-          <form onSubmit={handleSubmit}>
-
             <h2>Add To Do Item</h2>
-
+          <form className='todo-form' onSubmit={handleSubmit}>
             <label>
               <span>To Do Item</span>
               <input onChange={handleChange} name="text" type="text" placeholder="Item Details" />

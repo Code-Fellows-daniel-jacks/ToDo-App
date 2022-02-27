@@ -52,7 +52,6 @@ class LoginProvider extends React.Component {
       password: password,
       role: role || 'user',
     }
-    console.log(JSON.stringify(requestObj));
     fetch('http://localhost:3001/signup', {
       method: 'POST',
       headers: {
@@ -63,8 +62,6 @@ class LoginProvider extends React.Component {
       .then(results => results.json())
       .then(data => {
         if (data.user) {
-          console.log('in there');
-          console.log(data.user);
           this.setLoginState(true, data.user.token, data.user);
         }
       })

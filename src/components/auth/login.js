@@ -18,7 +18,6 @@ class Login extends React.Component {
 
   handleSubmit = e => {
     e.preventDefault();
-    console.log(this.context);
     this.context.login(this.state.username, this.state.password);
     this.props.toggleClose();
   };
