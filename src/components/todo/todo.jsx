@@ -13,35 +13,55 @@ import Pagination from '../pagination/pagination.jsx';
 import './todo.scss';
 
 const ToDo = () => {
-  let { numberOfItems, showCompleted, difficulty } = useGlobState();
+  let { numberOfItems, showCompleted, list, setList } = useGlobState();
   let authContext = useContext(LoginContext);
-  const [list, setList] = useState([]);
   const [page, setPage] = useState(1);
   const [listToDisplay, setListToDisplay] = useState([]);
   const [incomplete, setIncomplete] = useState([]);
   const { handleChange, handleSubmit } = useForm(addItem);
 
   function addItem(item) {
-
-    item.id = uuid();
-    item.complete = false;
     setList([...list, item]);
-
   }
 
   function deleteItem(id) {
-    const items = list.filter(item => item.id !== id);
-    setList(items);
+    fetch(`http://localhost:3001/api/v2/todo/${id}`, {
+      method: 'DELETE',
+      headers: {
+        'Authorization': `Token ${authContext.token}`,
+        'Content-Type': 'application/json'
+      }
+    })
+      .then(success => {
+        const items = list.filter(item => item.id !== id);
+        setList(items);
+      })
+      .catch(err => console.log(err));
   }
 
   function toggleComplete(id) {
-    const items = list.map(item => {
-      if (item.id == id) {
-        item.complete = !item.complete;
-      }
-      return item;
-    });
-    setList(items);
+    const itemToChange = list.find(item => item.id === id);
+    const updatedBool = itemToChange.complete ? false : true;
+    fetch(`http://localhost:3001/api/v2/todo/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Authorization': `Token ${authContext.token}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        complete: updatedBool,
+      })
+    })
+      .then(success => {
+        const items = list.map(item => {
+          if (item.id == id) {
+            item.complete = !item.complete;
+          }
+          return item;
+        });
+        setList(items);
+      })
+      .catch(err => console.log(err));
   }
 
   useEffect(() => {
@@ -64,10 +84,8 @@ const ToDo = () => {
       <Header incomplete={incomplete} />
       <Card className='form-card'>
         <When condition={authContext.loggedIn}>
-          <form onSubmit={handleSubmit}>
-
             <h2>Add To Do Item</h2>
-
+          <form className='todo-form' onSubmit={handleSubmit}>
             <label>
               <span>To Do Item</span>
               <input onChange={handleChange} name="text" type="text" placeholder="Item Details" />

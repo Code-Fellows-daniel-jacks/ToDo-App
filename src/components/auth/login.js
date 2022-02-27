@@ -25,14 +25,6 @@ class Login extends React.Component {
   render() {
     return (
       <Card className='login-card'>
-        <When condition={this.context.loggedIn}>
-          <h2>Are you sure you would like to logout?</h2>
-          <Button onClick={() => {
-            this.context.logout();
-            this.props.toggleClose();
-          }}>Log Out</Button>
-        </When>
-
         <When condition={!this.context.loggedIn}>
           <form onSubmit={this.handleSubmit}>
             <input
@@ -47,6 +39,10 @@ class Login extends React.Component {
             />
             <Button type='submit'>Login</Button>
           </form>
+        </When>
+        <When condition={this.context.loggedIn}>
+          <h4>Are you sure you would like to logout?</h4>
+          <Button onClick={this.context.logout}>Logout</Button>
         </When>
       </Card>
     );

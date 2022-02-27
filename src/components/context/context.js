@@ -1,5 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 
+import { LoginContext } from '../auth/authContext.js';
+
 let todoContext = React.createContext();
 
 export function useGlobState() {
@@ -7,10 +9,14 @@ export function useGlobState() {
 }
 
 export default function todoProvider({ children }) {
+  let authContext = useContext(LoginContext);
+
   let [numberOfItems, setNumberOfItems] = useState(2);
   let [showCompleted, toggleShowCompleted] = useState(true);
   let [sortBy, setSortBy] = useState('');
   let [difficulty, setDifficulty] = useState(3);
+  let [list, setList] = useState([]);
+
   let state = {
     numberOfItems,
     setNumberOfItems,
@@ -20,28 +26,29 @@ export default function todoProvider({ children }) {
     setSortBy,
     difficulty,
     setDifficulty,
+    list,
+    setList
   };
 
   useEffect(() => {
-    let JSONstate = localStorage.getItem('state');
-    let { numberOfItems, showCompleted, sortBy, difficulty } = JSON.parse(JSONstate);
-    if (JSONstate) {
-      setNumberOfItems(numberOfItems);
-      toggleShowCompleted(showCompleted);
-      setSortBy(sortBy);
-      setDifficulty(difficulty);
+    if (authContext.token) {
+      fetch('http://localhost:3001/api/v2/todo', {
+        method: 'GET',
+        headers: {
+          'Authorization': `Token ${authContext.token}`,
+          'Content-Type': 'application/json',
+        },
+      })
+        .then(results => results.json())
+        .then(data => {
+          setList(data);
+        })
+        .catch(reject => {
+          console.log('Err', reject);
+        })
     }
-    //   // if (JSONstate) setState(prevState => {
-    //   //   let { numberOfItems, showCompleted, sortBy, difficulty } = JSON.parse(JSONstate);
-    //   //   return { ...prevState, numberOfItems, showCompleted, sortBy, difficulty }
-    //   // });
-    //   // else setState(startingState);
-  }, []);
+  }, [numberOfItems, showCompleted, sortBy, difficulty, authContext]);
 
-  useEffect(() => {
-    localStorage.setItem('state', JSON.stringify(state));
-    // console.log('setting', localStorage);
-  }, [state]);
   return (
     <todoContext.Provider value={state}>
       {children}
